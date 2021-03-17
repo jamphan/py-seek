@@ -1,0 +1,23 @@
+host: www.seek.com.au
+headers:
+  authority: www.seek.com.au
+  accept: application/json, text/plain, */*
+  user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36
+  content-type: application/json;charset=UTF-8
+  accept-language: en-US,en;q=0.9
+  seek-request-country: AU
+  sec-ch-ua: '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"'
+graphql:
+  GetUser:
+    query: "query GetUser {\n  viewer {\n    _id\n    emailAddress\n    trackingId\n    personalDetails {\n      firstName\n      lastName\n      phoneNumber\n      __typename\n    }\n    __typename\n  }\n}\n"
+  GetResumes:
+    query: "query GetResumes {\n  viewer {\n    _id\n    resumes {\n      ...resume\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment resume on Resume {\n  id\n  createdDateUtc\n  isDefault\n  fileMetadata {\n    name\n    size\n    virusScanStatus\n    uri\n    __typename\n  }\n  origin {\n    type\n    __typename\n  }\n  __typename\n}\n"
+  GetProfile:
+    query: "query GetProfile {\n  viewer {\n    _id\n    profileVisibility {\n      level\n      __typename\n    }\n    roles(status: confirmed) {\n      ...roleJobsdb\n      __typename\n    }\n    yearsOfExperience {\n      id\n      description\n      newToWorkforce\n      __typename\n    }\n    qualifications(status: confirmed) {\n      ...qualification\n      __typename\n    }\n    skills {\n      ...skill\n      __typename\n    }\n    applicationPrefill {\n      coverLetterWrittenText\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment roleJobsdb on Role {\n  ...role\n  function {\n    id\n    subFunction {\n      id\n      __typename\n    }\n    __typename\n  }\n  industry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment role on Role {\n  id\n  title {\n    text\n    ontologyId\n    __typename\n  }\n  company {\n    text\n    ontologyId\n    __typename\n  }\n  seniority {\n    text\n    ontologyId\n    __typename\n  }\n  from {\n    year\n    month\n    __typename\n  }\n  to {\n    year\n    month\n    __typename\n  }\n  achievements\n  __typename\n}\n\nfragment qualification on Qualification {\n  id\n  name {\n    text\n    ontologyId\n    __typename\n  }\n  institute {\n    text\n    ontologyId\n    __typename\n  }\n  completed\n  completionDate {\n    ... on Year {\n      year\n      __typename\n    }\n    ... on MonthYear {\n      month\n      year\n      __typename\n    }\n    __typename\n  }\n  highlights\n  __typename\n}\n\nfragment skill on Skill {\n  keyword {\n    text\n    ontologyId\n    __typename\n  }\n  __typename\n}\n"
+  GetJobDetails:
+    query: "query GetJobDetails($regionalId: ID!, $brand: String!) {\n  jobWithRegionalId(regionalId: $regionalId, brand: $brand) {\n    id\n    content\n    title\n    advertiser {\n      id\n      name\n      __typename\n    }\n    abstract\n    applicationProcess {\n      linkOut\n      required {\n        name\n        __typename\n      }\n      __typename\n    }\n    product {\n      id\n      ... on BrandedJobAd {\n        branding {\n          logo {\n            jdpLogo\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      ... on PremiumJobAd {\n        branding {\n          logo {\n            jdpLogo\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n"
+    variables:
+      regionalId:
+        description: Job Id
+      brand:
+        default: seek

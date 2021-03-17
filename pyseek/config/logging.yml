@@ -1,0 +1,23 @@
+version: 1
+formatters:
+  precise:
+    format: '%(asctime)s [%(name)s]:%(levelname)s: %(message)s'
+  pretty:
+    format: '%(asctime)s [%(name)s]:%(levelname)s: %(message)s'
+    datefmt: '%H:%M:%S'
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: pretty
+    level: INFO
+    stream: ext://sys.stdout
+  file:
+    class: logging.handlers.RotatingFileHandler
+    formatter: precise
+    filename: pyseek.log
+    maxBytes: 1024
+    backupCount: 3
+loggers:
+  seekListings:
+    level: DEBUG
+    handlers: [console, file]
